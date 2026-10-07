@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assessment Mock Test</title>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#161b22; --panel2:#1c232c; --line:#2a323d;
+    --ink:#e6edf3; --dim:#9aa7b4; --faint:#6b7885;
+    --accent:#d94f5c; --accent2:#f0b429; --ok:#3fb950; --bad:#f85149; --blue:#79c0ff;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:44px 26px 100px}
+
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+          text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+  h1{font-size:34px;margin:0 0 8px;letter-spacing:-.02em}
+  .sub{color:var(--dim);margin:0 0 28px;font-size:16.5px;max-width:64ch}
+
+  .timerbar{position:sticky;top:0;z-index:20;background:var(--bg);
+            padding:14px 0 16px;border-bottom:1px solid var(--line);margin-bottom:30px}
+  .timer{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .clock{font-family:var(--mono);font-size:42px;font-weight:700;letter-spacing:-.02em;
+         font-variant-numeric:tabular-nums;min-width:190px}
+  .clock.warn{color:var(--accent2)} .clock.crit{color:var(--bad)}
+  .btn{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+       background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+       padding:9px 16px;border-radius:6px;cursor:pointer;font-weight:600}
+  .btn:hover{border-color:#3d4855;background:#232c37}
+  .btn.primary{background:#1f3a5f;border-color:#2d5580;color:#cfe4ff}
+  .btn.primary:hover{background:#26466f}
+  .hint{font-size:13px;color:var(--faint);font-family:var(--mono)}
+
+  h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;
+     color:var(--accent);margin:46px 0 14px;font-weight:600}
+  h3{font-size:20px;margin:0 0 6px;letter-spacing:-.01em}
+  p{margin:0 0 14px}
+  code{font-family:var(--mono);font-size:13.5px;background:var(--panel2);
+       padding:2px 6px;border-radius:4px;color:#c9d6e2}
+  strong{color:#fff;font-weight:650}
+
+  .prob{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+        padding:26px 28px;margin:0 0 22px}
+  .prob .tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+             color:var(--faint);margin-bottom:8px}
+  .prob .body{color:var(--dim);font-size:15px}
+  .prob .body strong{color:#dfe8f1;font-weight:600}
+  pre{background:#0b0e12;border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+      overflow-x:auto;font-family:var(--mono);font-size:13.5px;color:#c9d6e2;margin:0 0 16px;
+      line-height:1.55}
+  textarea{width:100%;min-height:210px;background:#0b0e12;color:#dbe6f0;border:1px solid var(--line);
+           border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:13.5px;
+           line-height:1.6;resize:vertical;tab-size:2}
+  textarea:focus{outline:none;border-color:#3d5a7a}
+  textarea.shake{animation:shk .3s}
+  @keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+  .row{display:flex;gap:12px;align-items:center;margin:14px 0 0;flex-wrap:wrap}
+  .res{margin-top:18px;font-family:var(--mono);font-size:13px}
+  .res table{width:100%;border-collapse:collapse}
+  .res td{padding:6px 10px 6px 0;border-bottom:1px solid #222a33;vertical-align:top;color:var(--dim)}
+  .res tr:last-child td{border-bottom:none}
+  .res .mark{width:26px}
+  .pass{color:var(--ok)} .fail{color:var(--bad)}
+  .lbl{color:var(--faint);font-size:11.5px}
+  .summary{font-size:15px;font-family:var(--sans);font-weight:650;margin-top:12px;padding-top:12px;
+           border-top:1px solid var(--line)}
+
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:11px;
+       padding:22px 26px;margin:0 0 20px}
+  .box.warnbox{border-left:3px solid var(--accent2)}
+  .box h4{margin:0 0 10px;font-size:16px}
+  ul{margin:0 0 14px;padding-left:22px} li{margin-bottom:6px;color:var(--dim);font-size:15px}
+  li strong{color:#dfe8f1}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);
+         font-size:13.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Personal Mock · Timed Assessment</div>
+  <h1>Mock Test — 90 Minutes, Two Problems</h1>
+  <p class="sub">Calibrated to the confirmed question pool. Solve in the box, hit Run Tests, and it grades you against the same cases HackerRank would hide. No autocomplete, no docs, no tabs.</p>
+
+  <div class="timerbar">
+    <div class="timer">
+      <div class="clock" id="clock">90:00</div>
+      <button class="btn primary" id="startBtn" onclick="toggleTimer()">Start</button>
+      <button class="btn" onclick="resetTimer()">Reset</button>
+      <span class="hint" id="thint">clock not running</span>
+    </div>
+    <label style="display:block;margin-top:12px;cursor:pointer;font-family:var(--mono);font-size:12.5px;color:var(--dim)">
+      <input type="checkbox" id="stressbox" style="vertical-align:-1px;margin-right:7px">
+      include stress cases <span style="color:var(--faint)">— off by default; a non-linear solution will freeze this tab</span>
+    </label>
+  </div>
+
+  <div class="box warnbox">
+    <h4>Read this before you touch the keyboard</h4>
+    <ul style="margin-bottom:0">
+      <li><strong>Read both problems first.</strong> Thirty seconds. Decide which you're banking.</li>
+      <li><strong>Correct beats clever.</strong> Scoring is by test cases passed — a working brute force outscores an elegant solution that breaks on one boundary.</li>
+      <li><strong>Ten-minute ceiling on any single stuck input.</strong> Move, then come back.</li>
+      <li><strong>Write in JavaScript here</strong> because this page can run it. On the real test, use whatever language you're fastest in — it isn't scored on language.</li>
+    </ul>
+  </div>
+
+  <h2>Problem 1</h2>
+  <div class="prob">
+    <div class="tag">Sliding window · Frequency map</div>
+    <h3>Longest Substring With Character Limit</h3>
+    <div class="body">
+      <p>Given a string <code>s</code> and an integer <code>k</code>, return the <strong>longest substring in which every individual character appears at most <code>k</code> times</strong>.</p>
+      <p>If two or more substrings tie for the longest length, return the one that <strong>appears first from left to right</strong>. If no valid non-empty substring exists, return the empty string.</p>
+      <p><strong>Constraints:</strong> <code>s</code> may be empty. <code>k</code> may be zero or negative. Total length up to 10<sup>5</sup> — an O(n²) solution will time out on the hidden stress case.</p>
+      <p style="margin-bottom:0"><strong>Function signature:</strong> <code>function longestSubstringWithLimit(s, k) { … }</code> — returns a string.</p>
+    </div>
+
+    <div class="row"><span class="lbl">VISIBLE EXAMPLES</span></div>
+    <pre>longestSubstringWithLimit("abcde", 1)  →  "abcde"
+longestSubstringWithLimit("aaabb", 2)  →  "aabb"
+longestSubstringWithLimit("aaaa",  2)  →  "aa"
+longestSubstringWithLimit("ababab",2)  →  "abab"</pre>
+
+    <textarea id="p1code" spellcheck="false">function longestSubstringWithLimit(s, k) {
+  // your solution here
+  return "";
+}</textarea>
+
+    <div class="row">
+      <button class="btn primary" onclick="runP1()">Run Tests</button>
+      <button class="btn" onclick="document.getElementById('p1code').value='function longestSubstringWithLimit(s, k) {\n  \n  return \&quot;\&quot;;\n}'">Clear</button>
+    </div>
+    <div class="res" id="p1res"></div>
+  </div>
+
+  <h2>Problem 2</h2>
+  <div class="prob">
+    <div class="tag">Binary search · Boundary conditions</div>
+    <h3>Count Occurrences in a Sorted Array</h3>
+    <div class="body">
+      <p>Given a <strong>sorted</strong> array of integers <code>arr</code> (which may contain duplicates, and may be empty) and a <code>target</code>, return <strong>how many times <code>target</code> appears</strong> in the array.</p>
+      <p><strong>Required: O(log n).</strong> The hidden suite includes an array of 10<sup>6</sup> identical elements. A linear scan passes every visible case and fails the hidden ones — which is exactly the trap this problem is built around.</p>
+      <p style="margin-bottom:0"><strong>Function signature:</strong> <code>function countOccurrences(arr, target) { … }</code> — returns a number.</p>
+    </div>
+
+    <div class="row"><span class="lbl">VISIBLE EXAMPLES</span></div>
+    <pre>countOccurrences([1,2,2,2,3,4,4], 2)  →  3
+countOccurrences([5,5,5,5,5],     5)  →  5
+countOccurrences([1,2,3],         9)  →  0</pre>
+
+    <textarea id="p2code" spellcheck="false">function countOccurrences(arr, target) {
+  // your solution here — must be O(log n)
+  return 0;
+}</textarea>
+
+    <div class="row">
+      <button class="btn primary" onclick="runP2()">Run Tests</button>
+      <button class="btn" onclick="runP2Complexity()">Check O(log n)</button>
+      <button class="btn" onclick="document.getElementById('p2code').value='function countOccurrences(arr, target) {\n  \n  return 0;\n}'">Clear</button>
+    </div>
+    <div class="res" id="p2res"></div>
+    <div class="res" id="p2cx"></div>
+    <div class="lbl" style="margin-top:10px;display:block">The complexity check passes your function a Proxy-wrapped array that counts how many elements it reads. Binary search reads about 2·log₂(n); a linear scan reads every element and fails. Copying or iterating the array counts as linear, because it is.</div>
+  </div>
+
+  <h2>Bonus — the code review variant</h2>
+  <div class="prob">
+    <div class="tag">Confirmed question format · Find the bug</div>
+    <h3>This binary search is broken. Find it.</h3>
+    <div class="body">
+      <p>A confirmed question shows you a code fragment and asks what's wrong and how to fix it — no writing from scratch. Same skill, different muscle. There are <strong>two</strong> bugs below.</p>
+    </div>
+<pre>function findIndex(arr, target) {
+  let lo = 0, hi = arr.length;          // line A
+  while (lo &lt; hi) {
+    let mid = (lo + hi) / 2;            // line B
+    if (arr[mid] === target) return mid;
+    if (arr[mid] &lt; target) lo = mid;    // line C
+    else hi = mid - 1;                  // line D
+  }
+  return -1;
+}</pre>
+    <div class="body">
+      <p style="margin-bottom:0">Write your answer in the box, then reveal the key.</p>
+    </div>
+    <textarea id="review" style="min-height:120px" spellcheck="false" placeholder="What's wrong, and what's the fix?"></textarea>
+    <div class="row">
+      <button class="btn primary" onclick="document.getElementById('revkey').style.display='block'">Reveal Key</button>
+    </div>
+    <div id="revkey" style="display:none;margin-top:18px">
+      <div class="box" style="margin:0">
+        <h4 style="color:var(--accent2)">The two bugs</h4>
+        <ul>
+          <li><strong>Line B — integer division.</strong> In a language with typed integers this truncates and is fine, but as written it produces a float, so <code>arr[mid]</code> is <code>undefined</code> and every comparison silently fails. Fix: <code>Math.floor((lo + hi) / 2)</code>. This is the bug that hides — it doesn't throw, it just returns −1 forever.</li>
+          <li><strong>Line C — the classic infinite loop.</strong> When <code>lo = mid</code> and <code>hi = mid + 1</code>, <code>mid</code> never advances past <code>lo</code>, so the loop spins forever. Fix: <code>lo = mid + 1</code>.</li>
+        </ul>
+        <p style="margin-bottom:0">Line A is actually <em>correct</em> here — the half-open interval <code>[lo, hi)</code> is a legitimate convention. The trap is assuming it's the bug because it doesn't look like your muscle memory. Worth sitting with: on a real code review, the conspicuous thing is often not the broken thing.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Score yourself honestly</h2>
+  <div class="box">
+    <ul style="margin-bottom:0">
+      <li><strong>22/22 visible + hidden</strong> — you're ready. Take the real thing.</li>
+      <li><strong>Visible green, hidden red</strong> — this is the exact failure mode that sinks 70% of candidates. Do not treat green checkmarks as confirmation. Go back to the edge-case table in the plan.</li>
+      <li><strong>One problem clean, one abandoned</strong> — that's a survivable outcome. You bank the solved one. Note which pattern beat you and drill only that.</li>
+      <li><strong>Both unfinished</strong> — you're not ready for Tuesday. Say so and I'll re-cut the plan; there's no prize for taking it early against a 6-month cooldown.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Companion file: <code>2026-10-07-oa-prep-plan.html</code> — the six-evening drill.<br>
+    Reference solutions for both problems are held back deliberately. Ask and I'll walk you through either one after you've attempted it.
+  </footer>
+
+</div>
+
+<script>
+/* ---------- timer ---------- */
+var TOTAL = 90 * 60, remaining = TOTAL, running = false, tick = null;
+function fmt(n){
+  var m = Math.floor(n / 60), s = n % 60;
+  return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+}
+function paint(){
+  var c = document.getElementById("clock");
+  c.textContent = fmt(remaining);
+  c.className = "clock" + (remaining <= 300 ? " crit" : remaining <= 1200 ? " warn" : "");
+  document.getElementById("thint").textContent = running ? "clock running" :
+    (remaining === TOTAL ? "clock not running" : "paused");
+}
+function toggleTimer(){
+  running = !running;
+  document.getElementById("startBtn").textContent = running ? "Pause" : "Start";
+  if (running){
+    tick = setInterval(function(){
+      if (remaining > 0){ remaining--; paint(); }
+      else { running = false; clearInterval(tick);
+             document.getElementById("startBtn").textContent = "Start";
+             paint(); alert("Time. Stop typing — that's the real constraint."); }
+    }, 1000);
+  } else { clearInterval(tick); paint(); }
+  paint();
+}
+function resetTimer(){
+  clearInterval(tick); running = false; remaining = TOTAL;
+  document.getElementById("startBtn").textContent = "Start"; paint();
+}
+paint();
+
+/* ---------- test runner ---------- */
+function build(fnName, code){
+  var f = new Function(code + "\n; return typeof " + fnName + " === 'function' ? " + fnName + " : null;")();
+  if (!f) throw new Error("Couldn't find a function named " + fnName + " in your code.");
+  return f;
+}
+function show(el, rows, title, note){
+  var pass = rows.filter(function(r){ return r.ok; }).length;
+  var html = '<table>';
+  rows.forEach(function(r){
+    html += '<tr><td class="mark ' + (r.ok ? "pass" : "fail") + '">' + (r.ok ? "PASS" : "FAIL") + '</td>' +
+            '<td><span class="lbl">' + r.label + '</span><br>' + r.desc + '</td></tr>';
+  });
+  html += '</table>';
+  html += '<div class="summary ' + (pass === rows.length ? "pass" : "fail") + '">' +
+          title + ': ' + pass + ' / ' + rows.length + ' cases' +
+          (note ? ' — ' + note : '') + '</div>';
+  el.innerHTML = html;
+}
+function err(el, e){ el.innerHTML = '<div class="summary fail">Error: ' + String(e.message || e) + '</div>'; }
+
+var P1 = [
+  {args:["abcde",1], want:"abcde", hidden:false, d:'"abcde" k=1'},
+  {args:["aaabb",2], want:"aabb",  hidden:false, d:'"aaabb" k=2'},
+  {args:["aaaa",2],  want:"aa",    hidden:false, d:'"aaaa" k=2'},
+  {args:["ababab",2],want:"abab",  hidden:false, d:'"ababab" k=2'},
+  {args:["aabbaa",2],want:"aabb",  hidden:true,  d:'"aabbaa" k=2 — two windows tie, leftmost wins'},
+  {args:["xxyyzz",1],want:"xy",    hidden:true,  d:'"xxyyzz" k=1 — leftmost of several ties'},
+  {args:["a",1],     want:"a",     hidden:true,  d:'single character'},
+  {args:["",3],      want:"",      hidden:true,  d:'empty string'},
+  {args:["zzz",0],   want:"",      hidden:true,  d:'k = 0 — nothing can qualify'},
+  {args:["abcdefghij",5],want:"abcdefghij",hidden:true,d:'all distinct, k=5'},
+  {args:[new Array(100001).fill("a").join("")+"b",50000], want:new Array(50000).fill("a").join("")+"b", hidden:true, stress:true, d:'100k stress with k=50000 — brute force times out, correct answer is 50000 a\u2019s plus the b'}
+];
+
+var P2 = [
+  {args:[[1,2,2,2,3,4,4],2], want:3, hidden:false, d:'duplicates in the middle'},
+  {args:[[5,5,5,5,5],5],     want:5, hidden:false, d:'every element matches'},
+  {args:[[1,2,3],9],         want:0, hidden:false, d:'target absent'},
+  {args:[[],5],              want:0, hidden:true,  d:'empty array'},
+  {args:[[42],42],           want:1, hidden:true,  d:'single element, hit'},
+  {args:[[42],7],            want:0, hidden:true,  d:'single element, miss'},
+  {args:[[-3,-3,0,0,0,7],0], want:3, hidden:true,  d:'negatives and zeros'},
+  {args:[[1,1,2,2,2,2,3],2], want:4, hidden:true,  d:'run of four'},
+  {args:[[0,0,0],0],         want:3, hidden:true,  d:'all zeros'},
+  {args:[[1,2,3,4,5,6],4],   want:1, hidden:true,  d:'single hit mid-array'},
+  {args:[Array(1000000).fill(7),7], want:1000000, hidden:true, stress:true, d:'1,000,000 identical — uniform-array correctness (complexity is checked separately, by the button below)'}
+];
+
+function j(x){ try { return JSON.stringify(x); } catch(e){ return String(x); } }
+function run(fn, cases, el, title){
+  var withStress = document.getElementById("stressbox").checked;
+  var skipped = 0;
+  var active = cases.filter(function(c){
+    if (c.stress && !withStress){ skipped++; return false; }
+    return true;
+  });
+  var rows = [], t0 = performance.now();
+  active.forEach(function(c){
+    var got, ok;
+    try {
+      var a = c.args.map(function(x){ return Array.isArray(x) ? x.slice() : x; });
+      got = fn.apply(null, a);
+      ok = j(got) === j(c.want);
+    } catch(e){ got = "threw: " + e.message; ok = false; }
+    rows.push({
+      ok: ok,
+      label: (c.hidden ? "HIDDEN" : "visible"),
+      desc: c.d + (ok ? "" : ' &nbsp;→ expected <code>' + j(c.want).slice(0,40) + '</code>, got <code>' + j(got).slice(0,40) + '</code>')
+    });
+  });
+  var ms = Math.round(performance.now() - t0);
+  var hid = rows.filter(function(r){ return r.label === "HIDDEN"; });
+  var hidFail = hid.filter(function(r){ return !r.ok; }).length;
+  show(el, rows, title, ms + "ms" + (hidFail ? " · hidden failures: " + hidFail : "") +
+       (skipped ? " · " + skipped + " stress case skipped" : ""));
+}
+function runP1(){
+  var el = document.getElementById("p1res");
+  try { run(build("longestSubstringWithLimit", document.getElementById("p1code").value), P1, el, "Problem 1"); }
+  catch(e){ err(el, e); }
+}
+function runP2(){
+  var el = document.getElementById("p2res");
+  try { run(build("countOccurrences", document.getElementById("p2code").value), P2, el, "Problem 2"); }
+  catch(e){ err(el, e); }
+}
+function runP2Complexity(){
+  var el = document.getElementById("p2cx");
+  try {
+    var fn = build("countOccurrences", document.getElementById("p2code").value);
+    var n = 4096, base = [], i;
+    for (i = 0; i < n; i++) base.push(Math.floor(i / 4));
+    var reads = 0;
+    var arr = new Proxy(base, {
+      get: function(t, p){ if (typeof p === "string" && /^\d+$/.test(p)) reads++; return t[p]; }
+    });
+    var target = base[n / 2];
+    var got = fn(arr, target);
+    var logn = Math.ceil(Math.log2(n));
+    var budget = 12 * logn + 40;
+    var correct = (got === 4);
+    var cheap = (reads <= budget);
+    el.innerHTML = '<table>' +
+      '<tr><td class="mark ' + (correct ? "pass" : "fail") + '">' + (correct ? "PASS" : "FAIL") + '</td>' +
+      '<td><span class="lbl">CORRECTNESS</span><br>expected <code>4</code>, got <code>' + got + '</code></td></tr>' +
+      '<tr><td class="mark ' + (cheap ? "pass" : "fail") + '">' + (cheap ? "PASS" : "FAIL") + '</td>' +
+      '<td><span class="lbl">COMPLEXITY</span><br>read <code>' + reads + '</code> of ' + n +
+      ' elements &middot; O(log n) budget is ' + budget + ' &middot; a linear scan reads ' + n + '</td></tr></table>' +
+      '<div class="summary ' + (correct && cheap ? "pass" : "fail") + '">' +
+      (correct && cheap ? "Both checks pass — that is a genuine O(log n) solution." :
+       !correct ? "Correctness failed first, so the read count is not meaningful yet." :
+       "Right answer, wrong method. You scanned the array — this passes every visible test and fails the real one.") +
+      '</div>';
+  } catch(e){ err(el, e); }
+}
+</script>
+</body>
+</html>

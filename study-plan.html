@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assessment Prep — Study Plan</title>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#161b22; --panel2:#1c232c; --line:#2a323d;
+    --ink:#e6edf3; --dim:#9aa7b4; --faint:#6b7885;
+    --accent:#d94f5c; --accent2:#f0b429; --ok:#3fb950; --warn:#e3853a;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:56px 28px 96px}
+
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+          text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:38px;line-height:1.15;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--dim);font-size:17px;margin:0 0 34px;max-width:66ch}
+
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+        gap:1px;background:var(--line);border:1px solid var(--line);
+        border-radius:10px;overflow:hidden;margin-bottom:46px}
+  .meta div{background:var(--panel);padding:14px 16px}
+  .meta .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+           text-transform:uppercase;color:var(--faint);display:block;margin-bottom:5px}
+  .meta .v{font-size:15px;font-weight:600}
+  .meta .v.hot{color:var(--accent2)}
+
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;
+     color:var(--accent);margin:52px 0 6px;font-weight:600}
+  h2 + .lede{color:var(--dim);margin:0 0 22px;font-size:15.5px}
+  h3{font-size:19px;margin:30px 0 8px;letter-spacing:-.01em}
+
+  p{margin:0 0 16px}
+  strong{color:#fff;font-weight:650}
+  code{font-family:var(--mono);font-size:13.5px;background:var(--panel2);
+       padding:2px 6px;border-radius:4px;color:#c9d6e2}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:22px 24px;margin:0 0 18px}
+  .card.hot{border-color:#5a2f34;background:linear-gradient(180deg,#1d1418,var(--panel))}
+  .card.good{border-color:#23492c}
+
+  ul,ol{margin:0 0 16px;padding-left:22px}
+  li{margin-bottom:7px}
+  li code{font-size:13px}
+
+  .day{display:grid;grid-template-columns:96px 1fr;gap:0;border-top:1px solid var(--line)}
+  .day:last-child{border-bottom:1px solid var(--line)}
+  .day .when{font-family:var(--mono);font-size:12px;color:var(--faint);
+             padding:20px 14px 20px 0;text-transform:uppercase;letter-spacing:.06em}
+  .day .what{padding:20px 0}
+  .day .what h4{margin:0 0 6px;font-size:17px;font-weight:650}
+  .day .what p{margin:0 0 10px;color:var(--dim);font-size:14.5px}
+  .day .what ul{margin:0;padding-left:20px}
+  .day .what li{font-size:14.5px;color:var(--dim);margin-bottom:5px}
+  .day .what li a{color:#7fb3e8;text-decoration:none;border-bottom:1px solid #2c4a63}
+  .day .what li a:hover{border-bottom-color:#7fb3e8}
+  .pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+        text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-left:8px;
+        vertical-align:2px;font-weight:600}
+  .pill.key{background:#3a2a12;color:var(--accent2);border:1px solid #5c421a}
+  .pill.mock{background:#122b3a;color:#79c0ff;border:1px solid #1f4a63}
+  .pill.go{background:#12301a;color:var(--ok);border:1px solid #1f4a2a}
+
+  .skip{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+        border-radius:8px;padding:18px 22px;margin:0 0 18px}
+  .skip h4{margin:0 0 8px;font-size:15px;color:var(--accent)}
+  .skip p{margin:0;font-size:14.5px;color:var(--dim)}
+
+  .edge{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:20px 24px;margin:0 0 18px}
+  .edge h4{margin:0 0 12px;font-size:15px;font-family:var(--mono);letter-spacing:.06em;
+           text-transform:uppercase;color:var(--accent2)}
+  .edge table{width:100%;border-collapse:collapse;font-size:14.5px}
+  .edge td{padding:6px 10px 6px 0;vertical-align:top;color:var(--dim);border-bottom:1px solid #222a33}
+  .edge tr:last-child td{border-bottom:none}
+  .edge td:first-child{font-family:var(--mono);font-size:12.5px;color:#c9d6e2;
+                       white-space:nowrap;width:190px}
+
+  .note{font-size:14px;color:var(--faint);font-style:italic;margin-top:10px}
+
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+         font-size:13.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Assessment Prep · Built 7 October 2026</div>
+  <h1>Assessment Prep — Study Plan</h1>
+  <p class="sub">Engineering Associate, operations technology track. Hybrid, three days a week on-site.</p>
+
+  <div class="meta">
+    <div><span class="k">Invite received</span><span class="v">Tue Oct 6, PM</span></div>
+    <div><span class="k">Today</span><span class="v">Wed Oct 7</span></div>
+    <div><span class="k">Finish by</span><span class="v hot">Mon Oct 12</span></div>
+    <div><span class="k">Buffer only</span><span class="v hot">Tue Oct 13</span></div>
+    <div><span class="k">Assessment</span><span class="v">90 min · 2 problems</span></div>
+  </div>
+
+  <div class="card hot">
+    <p style="margin:0 0 12px"><strong>The deadline is a timestamp, not the end of a day.</strong> The employer confirmed it: the link expires <strong>7 days from the moment HackerRank sent the email</strong>, and they grant no extensions for any reason. If that email landed Tuesday October 6 at 2:00 PM, your window closes <strong>Tuesday October 13 at 2:00 PM</strong> — which means sitting down to take it Tuesday evening is already too late.</p>
+    <p style="margin:0 0 12px"><strong>Go read the exact date and time off the HackerRank email</strong> and treat it as immovable. This plan aims to have you finished <strong>Monday October 12</strong>, leaving Tuesday as pure buffer. Don't spend the buffer — it exists for a dead router or a crashed browser, not for one more practice problem.</p>
+    <p style="margin:0"><strong>Also confirmed:</strong> your score stays valid <strong>180 days</strong> on the employer's platform. Any future requisition needing this assessment reuses it automatically, with no second invitation. That cuts both ways — which is the whole argument for doing it properly once.</p>
+  </div>
+
+  <h2>The test, precisely</h2>
+  <p class="lede">What's actually in front of you, from candidates who took this exact assessment in 2026.</p>
+
+  <div class="card">
+    <ul style="margin-bottom:0">
+      <li><strong>90 minutes, 2 coding problems, no multiple choice.</strong> That's the dominant 2026 format. A less common variant runs 60 minutes with 7 MCQs plus 2 problems.</li>
+      <li><strong>Difficulty: LeetCode Easy to Medium</strong>, occasionally one Hard served first.</li>
+      <li><strong>Language is your choice</strong> — Python, Java, JavaScript, Ruby all available. Use the one you're fastest in under a clock. It is not scored on language.</li>
+      <li><strong>Scored on test-case pass rate</strong>, and hidden cases count exactly the same as the visible ones. Run button turns samples green and tells you nothing about your score.</li>
+      <li><strong>Copy-paste is tracked.</strong> No webcam, no screen recording. Avoid pasting large blocks.</li>
+      <li><strong>Estimated pass rate is about 30%</strong>, and a failure triggers a 6-month cooldown. This is a one-shot — prep properly and take it once.</li>
+    </ul>
+  </div>
+
+  <h2>Focus — the whole list</h2>
+  <p class="lede">Six patterns. That's the confirmed question pool across every report. Nothing exotic.</p>
+
+  <div class="card good">
+    <ol style="margin-bottom:0">
+      <li><strong>Arrays and strings</strong> — highest frequency, present in every single report.</li>
+      <li><strong>Hash maps</strong> — frequency counting, lookup optimization.</li>
+      <li><strong>Two-pointer</strong> — sorted traversal, pair finding, in-place partitioning.</li>
+      <li><strong>Sliding window</strong> — fixed and variable width. One candidate's actual second question was this.</li>
+      <li><strong>Binary search</strong> — including <em>debugging</em> someone else's broken binary search. Appeared twice.</li>
+      <li><strong>BFS</strong> — single and multi-source. Not general graph theory; just the grid-flooding kind.</li>
+    </ol>
+  </div>
+
+  <div class="skip">
+    <h4>Skip these entirely</h4>
+    <p>Dynamic programming. Graph algorithms beyond BFS. System design. Trie. Union-find. Backtracking. <strong>None of these appear anywhere in the confirmed question pool.</strong> Every hour spent on them is an hour stolen from sliding window. If you're short on time, this is where you buy it back.</p>
+  </div>
+
+  <h2>The plan</h2>
+  <p class="lede">Seven slots — tonight through Tuesday. Two hours each is plenty. The order matters — each day leans on the one before.</p>
+
+  <div class="day">
+    <div class="when">Tonight<br>Oct 7</div>
+    <div class="what">
+      <h4>Diagnostic — find your actual weak spot<span class="pill key">Do first</span></h4>
+      <p>Before drilling anything, find out what you already have. Six problems, sixty minutes, no IDE autocomplete, timer on. Write down which ones you finished and which you abandoned.</p>
+      <ul>
+        <li><a href="https://leetcode.com/problems/two-sum/">LC 1 — Two Sum</a> (hash map)</li>
+        <li><a href="https://leetcode.com/problems/valid-anagram/">LC 242 — Valid Anagram</a> (frequency map)</li>
+        <li><a href="https://leetcode.com/problems/container-with-most-water/">LC 11 — Container With Most Water</a> (two-pointer)</li>
+        <li><a href="https://leetcode.com/problems/binary-search/">LC 704 — Binary Search</a> (the base case)</li>
+        <li><a href="https://leetcode.com/problems/maximum-subarray/">LC 53 — Maximum Subarray</a> (arrays)</li>
+        <li><a href="https://leetcode.com/problems/product-of-array-except-self/">LC 238 — Product of Array Except Self</a> (arrays, no division)</li>
+      </ul>
+      <p style="margin-top:12px">Whatever you stumble on becomes your priority tomorrow. The mock test in the companion file is calibrated to be run twice — once now as a baseline is optional, but worth it if you finish the six early.</p>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Thu<br>Oct 8</div>
+    <div class="what">
+      <h4>Arrays and strings</h4>
+      <p>Six to eight problems. The highest-frequency topic on the test — do not rush this day. Focus on array manipulation, prefix sums, and character-frequency maps over strings.</p>
+      <ul>
+        <li><a href="https://leetcode.com/problems/group-anagrams/">LC 49 — Group Anagrams</a></li>
+        <li><a href="https://leetcode.com/problems/valid-palindrome/">LC 125 — Valid Palindrome</a></li>
+        <li><a href="https://leetcode.com/problems/longest-palindromic-substring/">LC 5 — Longest Palindromic Substring</a></li>
+        <li><a href="https://leetcode.com/problems/merge-intervals/">LC 56 — Merge Intervals</a></li>
+        <li><a href="https://leetcode.com/problems/contains-duplicate/">LC 217 — Contains Duplicate</a></li>
+        <li><a href="https://leetcode.com/problems/top-k-frequent-elements/">LC 347 — Top K Frequent Elements</a></li>
+      </ul>
+      <p style="margin-top:12px">For each one, before you submit, ask yourself the four edge questions in the section below. Build the habit now, not on day five.</p>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Fri<br>Oct 9</div>
+    <div class="what">
+      <h4>Hash maps and two-pointer</h4>
+      <p>Four to six problems. Short day — these patterns repeat so heavily that a few reps lock them in. Aim for the point where you recognize the pattern within thirty seconds of reading the prompt.</p>
+      <ul>
+        <li><a href="https://leetcode.com/problems/3sum/">LC 15 — 3Sum</a> (two-pointer over sorted)</li>
+        <li><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">LC 167 — Two Sum II, sorted input</a></li>
+        <li><a href="https://leetcode.com/problems/longest-consecutive-sequence/">LC 128 — Longest Consecutive Sequence</a></li>
+        <li><a href="https://leetcode.com/problems/find-all-anagrams-in-a-string/">LC 438 — Find All Anagrams in a String</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Sat<br>Oct 10</div>
+    <div class="what">
+      <h4>Sliding window — the money day<span class="pill key">Highest value</span></h4>
+      <p>Five to six problems, and give this the most time of any single day. Sliding window plus a frequency map is the exact combination that appeared on a real candidate's test. That specific intersection — variable-width window with a per-character count — is the single highest-probability thing you can drill.</p>
+      <ul>
+        <li><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/">LC 3 — Longest Substring Without Repeating Characters</a></li>
+        <li><a href="https://leetcode.com/problems/longest-repeating-character-replacement/">LC 424 — Longest Repeating Character Replacement</a></li>
+        <li><a href="https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/">LC 340 — At Most K Distinct Characters</a></li>
+        <li><a href="https://leetcode.com/problems/permutation-in-string/">LC 567 — Permutation in String</a> (fixed window)</li>
+        <li><a href="https://leetcode.com/problems/minimum-window-substring/">LC 76 — Minimum Window Substring</a> (the hard version)</li>
+        <li><a href="https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/">LC 395 — At Least K Repeating Characters</a> (per-character count)</li>
+      </ul>
+      <p style="margin-top:12px"><strong>The pattern in one line:</strong> grow the right edge, and when the window breaks a condition, shrink from the left until it's legal again. Track the best window seen along the way. If you can write that from a cold start, you've covered the most likely question on your test.</p>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Sun<br>Oct 11</div>
+    <div class="what">
+      <h4>Binary search, then the full mock exam<span class="pill mock">90 min, timed</span></h4>
+      <p>Four problems in the afternoon, plus one exercise that isn't on LeetCode at all: take your own working binary search, deliberately introduce an off-by-one or a wrong boundary, set it aside for an hour, then debug it cold. That mirror-image skill — reading broken code and finding the flaw — is a confirmed question format, and it's the one people never practice.</p>
+      <ul>
+        <li><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">LC 33 — Search in Rotated Sorted Array</a></li>
+        <li><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">LC 153 — Find Minimum in Rotated Sorted Array</a></li>
+        <li><a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/">LC 34 — First and Last Position</a></li>
+        <li><a href="https://leetcode.com/problems/search-a-2d-matrix/">LC 74 — Search a 2D Matrix</a></li>
+      </ul>
+      <p style="margin-top:12px"><strong>Then the mock.</strong> Open the companion file, start the timer, don't stop it. No autocomplete, no docs, nothing else open. Afterwards write down how many minutes each problem took, and whether you ran out of time or ran out of ideas — those need different fixes.</p>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Mon<br>Oct 12</div>
+    <div class="what">
+      <h4>Light drill, then take the assessment<span class="pill go">Test day</span></h4>
+      <p>Morning: run the pre-flight checklist below. Then the edge-case table against three sliding-window problems you already solved. That's it — no new topics. Ninety minutes of self-doubt on assessment day costs more than it buys.</p>
+      <p>Then take it. Pick your fastest language, <strong>read both problems before writing a line</strong> so you can order them, and budget roughly 40 minutes each with 10 in reserve. If the first problem is the Hard, do the other one first — a solved easy problem is points you keep.</p>
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="when">Tue<br>Oct 13</div>
+    <div class="what">
+      <h4>Buffer — you should not need this<span class="pill">Do not plan for it</span></h4>
+      <p>This day exists for a crashed browser, a dead router, or a power cut. It is not extra study time. They grant no extensions, and the link expires at a <strong>specific time of day</strong> — if it landed Tuesday October 6 at 2:00 PM, it dies Tuesday October 13 at 2:00 PM.</p>
+      <p>If Monday goes badly and you haven't submitted, this is your last window. Take it Tuesday morning.</p>
+    </div>
+  </div>
+
+  <h2>Pre-flight — do this on the machine you'll test on</h2>
+  <p class="lede">Straight from HackerRank's own candidate FAQ. These are the failures that have nothing to do with your coding.</p>
+
+  <div class="card">
+    <ul style="margin-bottom:0">
+      <li><strong>Run their System Compatibility Check first</strong> — <code>hackerrank.com/compatibility</code>. Do it on the actual machine and browser you'll use, not later.</li>
+      <li><strong>Take the official HackerRank Sample Test</strong> from your test login page. It costs nothing and it's the only way to learn the editor, the run button, and how test results display before it counts for something.</li>
+      <li><strong>Latest Chrome, Edge, Safari, or Firefox.</strong> Not a stale browser, not an unusual one.</li>
+      <li><strong>Wired or solid Wi-Fi, and power plugged in.</strong> The timer keeps running if your connection drops, and there is no retake. Submitted work auto-saves, so a dropout isn't fatal — but the clock never stops.</li>
+      <li><strong>Quiet, well-lit, minimal distraction.</strong> Their words.</li>
+      <li><strong>Webcam may be required.</strong> Their FAQ says proctored tests may need it on for the whole test. Have it working and be in frame — the earlier candidate reports said this employer wasn't using webcam proctoring, but the FAQ is generic and it's not worth betting against.</li>
+    </ul>
+  </div>
+
+  <div class="skip">
+    <h4>Their AI-tracking warning — read it literally</h4>
+    <p><strong>"AI tracking may be enabled for your test. To avoid rejection, do not: shift tabs/browsers, copy and paste, move out of the webcam frame, use screen-sharing apps."</strong> That's HackerRank's own list, and the words "to avoid rejection" are theirs. So: one tab, no pasting, no window-switching, no second monitor tricks. This kills the idea of having anything open beside you — a second screen counts as a screen-sharing app in spirit even if it doesn't trip the detector. <strong>Clear your desk, close everything else, and code it yourself.</strong></p>
+  </div>
+
+  <h2>Where people actually fail</h2>
+  <p class="lede">The dominant failure is not hard problems. It's passing all visible cases and failing hidden ones — and it happens on easy problems, not hard ones.</p>
+
+  <div class="edge">
+    <h4>Run this list before every submit</h4>
+    <table>
+      <tr><td>empty input</td><td>Empty string, empty array, null. Does it crash or return something sane?</td></tr>
+      <tr><td>single element</td><td>Array of length 1. Loops that assume a pair or a neighbor will break here.</td></tr>
+      <tr><td>no valid answer</td><td>The case where nothing satisfies the condition. What do you return — 0, −1, empty?</td></tr>
+      <tr><td>everything valid</td><td>All elements qualify. Does your window logic still terminate correctly?</td></tr>
+      <tr><td>boundary values</td><td>Zeros, negatives, duplicates, maximum constraint sizes.</td></tr>
+      <tr><td>complexity</td><td>Read the constraints. If n is 10<sup>5</sup>, an O(n²) solution times out on hidden stress tests even though it's correct.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Strategy under the clock</h3>
+    <ul style="margin-bottom:0">
+      <li><strong>Read both problems first.</strong> Thirty seconds. If one is clearly easier, bank it and move — a solved easy problem is points you keep.</li>
+      <li><strong>Correct beats clever.</strong> Scoring is by test cases passed. A brute force that passes everything outscores an elegant solution that trips on one boundary. Get it working, then improve if time allows.</li>
+      <li><strong>Don't burn twenty minutes on one edge case.</strong> Set a hard ceiling — if you're stuck more than ten minutes on a single input, move to the other problem and come back.</li>
+      <li><strong>Write the naive version first.</strong> Then optimize. You can't lose points for having working code.</li>
+    </ul>
+  </div>
+
+  <h2>After the OA — so you're not surprised</h2>
+  <p class="lede">Worth ten minutes of reading now, because the pipeline shifts shape after this stage.</p>
+
+  <div class="card">
+    <ul style="margin-bottom:0">
+      <li><strong>Next stage is a HireVue recorded video interview</strong>, not live.</li>
+      <li><strong>The technical round leans Java and SQL, not algorithms.</strong> Candidates report functional interfaces, inheritance, concurrency with Executors, the Streams API — and SQL with complex joins and indexing. One candidate was asked zero DSA questions across the entire process.</li>
+      <li><strong>SQL is the cheapest thing you can shore up now</strong> — joins, GROUP BY, HAVING, and window functions. It's in the job's desired qualifications and it's a week of evenings, not a month.</li>
+      <li><strong>Their JD talks heavily about risk, compliance, and escalation.</strong> That language is real at a large bank — worth having a story ready about following a process properly rather than shortcutting it.</li>
+      <li><strong>Your military experience formally counts</strong> toward the qualification bar. So does the Rails work. Neither of those needs dressing up.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Companion file: <code>2026-10-07-mock-test.html</code> — timed, two problems, hidden cases.<br>
+    Deadline assumption is Oct 13. Correct it and this re-cuts.
+  </footer>
+
+</div>
+</body>
+</html>
