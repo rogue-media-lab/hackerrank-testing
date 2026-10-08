@@ -26,7 +26,7 @@ The study plan. Ranked by priority, so if you lose a day, cut from the bottom â€
 
 A working practice test, not a worksheet.
 
-- **90-minute countdown** that turns amber at 20 minutes and red at 5
+- **Countdown timer, 60 min by default** (switchable to 90 from the dropdown), turning amber at 20 minutes and red at 5
 - **Two problems** calibrated to the real thing â€” a sliding-window/frequency-map problem
   and a binary-search-with-boundary-conditions problem
 - **A real grader.** Type your solution in the page, hit *Run Tests*, and it executes your
